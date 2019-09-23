@@ -31,6 +31,7 @@ export default class Dropdown extends PureComponent {
     propsExtractor: () => null,
 
     absoluteRTLLayout: false,
+    changeTextWithCallback: false,
 
     dropdownOffset: {
       top: 32,
@@ -95,6 +96,7 @@ export default class Dropdown extends PureComponent {
     propsExtractor: PropTypes.func,
 
     absoluteRTLLayout: PropTypes.bool,
+    changeTextWithCallback: PropTypes.bool,
 
     dropdownOffset: PropTypes.shape({
       top: PropTypes.number.isRequired,
@@ -345,16 +347,24 @@ export default class Dropdown extends PureComponent {
       onChangeText,
       animationDuration,
       rippleDuration,
+      changeTextWithCallback,
     } = this.props;
 
     let value = valueExtractor(data[index], index);
     let delay = Math.max(0, rippleDuration - animationDuration);
+    const callback = (next = false) => {
+      this.onClose(next ? value : null);
+    };
 
     if ('function' === typeof onChangeText) {
-      onChangeText(value, index, data);
+      if(changeTextWithCallback){
+        onChangeText({value, index, data, callback});
+      } else{
+        onChangeText(value, index, data);
+        setTimeout(() => this.onClose(value), delay);
+      }
     }
 
-    setTimeout(() => this.onClose(value), delay);
   }
 
   onLayout(event) {
