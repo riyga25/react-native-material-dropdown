@@ -19,144 +19,6 @@ import DropdownItem from '../item';
 import styles from './styles';
 
 export default class Dropdown extends PureComponent {
-  static defaultProps = {
-    hitSlop: { top: 6, right: 4, bottom: 6, left: 4 },
-
-    disabled: false,
-
-    data: [],
-
-    valueExtractor: ({ value } = {}, index) => value,
-    labelExtractor: ({ label } = {}, index) => label,
-    propsExtractor: () => null,
-
-    absoluteRTLLayout: false,
-    changeTextWithCallback: false,
-
-    dropdownOffset: {
-      top: 32,
-      left: 0,
-    },
-
-    dropdownMargins: {
-      min: 8,
-      max: 16,
-    },
-
-    rippleCentered: false,
-    rippleSequential: true,
-
-    rippleInsets: {
-      top: 16,
-      right: 0,
-      bottom: -8,
-      left: 0,
-    },
-
-    rippleOpacity: 0.54,
-    shadeOpacity: 0.12,
-
-    rippleDuration: 400,
-    animationDuration: 225,
-
-    fontSize: 16,
-
-    textColor: 'rgba(0, 0, 0, .87)',
-    itemColor: 'rgba(0, 0, 0, .54)',
-    baseColor: 'rgba(0, 0, 0, .38)',
-
-    itemCount: 4,
-    itemPadding: 8,
-
-    supportedOrientations: [
-      'portrait',
-      'portrait-upside-down',
-      'landscape',
-      'landscape-left',
-      'landscape-right',
-    ],
-
-    useNativeDriver: false,
-  };
-
-  static propTypes = {
-    ...TouchableWithoutFeedback.propTypes,
-
-    disabled: PropTypes.bool,
-
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
-
-    data: PropTypes.arrayOf(PropTypes.object),
-
-    valueExtractor: PropTypes.func,
-    labelExtractor: PropTypes.func,
-    propsExtractor: PropTypes.func,
-
-    absoluteRTLLayout: PropTypes.bool,
-    changeTextWithCallback: PropTypes.bool,
-
-    dropdownOffset: PropTypes.shape({
-      top: PropTypes.number.isRequired,
-      left: PropTypes.number.isRequired,
-    }),
-
-    dropdownMargins: PropTypes.shape({
-      min: PropTypes.number.isRequired,
-      max: PropTypes.number.isRequired,
-    }),
-
-    dropdownPosition: PropTypes.number,
-
-    rippleColor: PropTypes.string,
-    rippleCentered: PropTypes.bool,
-    rippleSequential: PropTypes.bool,
-
-    rippleInsets: PropTypes.shape({
-      top: PropTypes.number,
-      right: PropTypes.number,
-      bottom: PropTypes.number,
-      left: PropTypes.number,
-    }),
-
-    rippleOpacity: PropTypes.number,
-    shadeOpacity: PropTypes.number,
-
-    rippleDuration: PropTypes.number,
-    animationDuration: PropTypes.number,
-
-    fontSize: PropTypes.number,
-
-    textColor: PropTypes.string,
-    itemColor: PropTypes.string,
-    selectedItemColor: PropTypes.string,
-    disabledItemColor: PropTypes.string,
-    baseColor: PropTypes.string,
-
-    itemTextStyle: Text.propTypes.style,
-
-    itemCount: PropTypes.number,
-    itemPadding: PropTypes.number,
-
-    onLayout: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onChangeText: PropTypes.func,
-
-    renderBase: PropTypes.func,
-    renderAccessory: PropTypes.func,
-
-    containerStyle: (ViewPropTypes || View.propTypes).style,
-    overlayStyle: (ViewPropTypes || View.propTypes).style,
-    pickerStyle: (ViewPropTypes || View.propTypes).style,
-
-    supportedOrientations: PropTypes.arrayOf(PropTypes.string),
-
-    useNativeDriver: PropTypes.bool,
-  };
-
   constructor(props) {
     super(props);
 
@@ -190,7 +52,7 @@ export default class Dropdown extends PureComponent {
     };
   }
 
-  componentWillReceiveProps({ value }) {
+  UNSAFE_componentWillReceiveProps({ value }) {
     if (value !== this.props.value) {
       this.setState({ value });
     }
@@ -781,3 +643,141 @@ export default class Dropdown extends PureComponent {
     );
   }
 }
+
+Dropdown.propTypes = {
+  ...TouchableWithoutFeedback.propTypes,
+
+  disabled: PropTypes.bool,
+
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+
+  data: PropTypes.arrayOf(PropTypes.object),
+
+  valueExtractor: PropTypes.func,
+  labelExtractor: PropTypes.func,
+  propsExtractor: PropTypes.func,
+
+  absoluteRTLLayout: PropTypes.bool,
+  changeTextWithCallback: PropTypes.bool,
+
+  dropdownOffset: PropTypes.shape({
+    top: PropTypes.number.isRequired,
+    left: PropTypes.number.isRequired,
+  }),
+
+  dropdownMargins: PropTypes.shape({
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+  }),
+
+  dropdownPosition: PropTypes.number,
+
+  rippleColor: PropTypes.string,
+  rippleCentered: PropTypes.bool,
+  rippleSequential: PropTypes.bool,
+
+  rippleInsets: PropTypes.shape({
+    top: PropTypes.number,
+    right: PropTypes.number,
+    bottom: PropTypes.number,
+    left: PropTypes.number,
+  }),
+
+  rippleOpacity: PropTypes.number,
+  shadeOpacity: PropTypes.number,
+
+  rippleDuration: PropTypes.number,
+  animationDuration: PropTypes.number,
+
+  fontSize: PropTypes.number,
+
+  textColor: PropTypes.string,
+  itemColor: PropTypes.string,
+  selectedItemColor: PropTypes.string,
+  disabledItemColor: PropTypes.string,
+  baseColor: PropTypes.string,
+
+  itemTextStyle: Text.propTypes.style,
+
+  itemCount: PropTypes.number,
+  itemPadding: PropTypes.number,
+
+  onLayout: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  onChangeText: PropTypes.func,
+
+  renderBase: PropTypes.func,
+  renderAccessory: PropTypes.func,
+
+  containerStyle: (ViewPropTypes || View.propTypes).style,
+  overlayStyle: (ViewPropTypes || View.propTypes).style,
+  pickerStyle: (ViewPropTypes || View.propTypes).style,
+
+  supportedOrientations: PropTypes.arrayOf(PropTypes.string),
+
+  useNativeDriver: PropTypes.bool,
+};
+
+Dropdown.defaultProps = {
+  hitSlop: { top: 6, right: 4, bottom: 6, left: 4 },
+
+  disabled: false,
+
+  data: [],
+
+  valueExtractor: ({ value } = {}, index) => value,
+  labelExtractor: ({ label } = {}, index) => label,
+  propsExtractor: () => null,
+
+  absoluteRTLLayout: false,
+  changeTextWithCallback: false,
+
+  dropdownOffset: {
+    top: 32,
+    left: 0,
+  },
+
+  dropdownMargins: {
+    min: 8,
+    max: 16,
+  },
+
+  rippleCentered: false,
+  rippleSequential: true,
+
+  rippleInsets: {
+    top: 16,
+    right: 0,
+    bottom: -8,
+    left: 0,
+  },
+
+  rippleOpacity: 0.54,
+  shadeOpacity: 0.12,
+
+  rippleDuration: 400,
+  animationDuration: 225,
+
+  fontSize: 16,
+
+  textColor: 'rgba(0, 0, 0, .87)',
+  itemColor: 'rgba(0, 0, 0, .54)',
+  baseColor: 'rgba(0, 0, 0, .38)',
+
+  itemCount: 4,
+  itemPadding: 8,
+
+  supportedOrientations: [
+    'portrait',
+    'portrait-upside-down',
+    'landscape',
+    'landscape-left',
+    'landscape-right',
+  ],
+
+  useNativeDriver: false,
+};
