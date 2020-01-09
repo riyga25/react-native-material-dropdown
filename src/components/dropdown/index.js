@@ -18,6 +18,8 @@ import { TextField } from "react-native-material-textfield";
 import DropdownItem from "../item";
 import styles from "./styles";
 
+const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
+
 export default class Dropdown extends PureComponent {
   constructor(props) {
     super(props);
@@ -106,14 +108,12 @@ export default class Dropdown extends PureComponent {
       onFocus();
     }
 
-    let dimensions = Dimensions.get("window");
-
     this.container.measureInWindow((x, y, containerWidth, containerHeight) => {
       let { opacity } = this.state;
 
       /* Adjust coordinates for relative layout in RTL locale */
       if (I18nManager.isRTL && !absoluteRTLLayout) {
-        x = dimensions.width - (x + containerWidth);
+        x = windowWidth - (x + containerWidth);
       }
 
       let delay = Math.max(
@@ -135,10 +135,10 @@ export default class Dropdown extends PureComponent {
       let right = x + containerWidth + maxMargin;
       let rightInset;
 
-      if (dimensions.width - right > minMargin) {
+      if (windowWidth - right > minMargin) {
         rightInset = maxMargin;
       } else {
-        right = dimensions.width - minMargin;
+        right = windowWidth - minMargin;
         rightInset = minMargin;
       }
 
@@ -526,6 +526,9 @@ export default class Dropdown extends PureComponent {
 
       supportedOrientations,
 
+      alignToContent,
+      windowPadding,
+
       ...props
     } = this.props;
 
@@ -540,6 +543,12 @@ export default class Dropdown extends PureComponent {
 
     let height = 2 * itemPadding + itemSize * visibleItemCount;
     let translateY = -itemPadding;
+
+    if(alignToContent){
+      if(windowHeight < height + top + windowPadding.bottom){
+        dropdownPosition = visibleItemCount
+      }
+    }
 
     if (null == dropdownPosition) {
       switch (selected) {
@@ -652,6 +661,7 @@ Dropdown.propTypes = {
 
   absoluteRTLLayout: PropTypes.bool,
   changeTextWithCallback: PropTypes.bool,
+  alignToContent: PropTypes.bool,
 
   dropdownOffset: PropTypes.shape({
     top: PropTypes.number.isRequired,
@@ -661,6 +671,13 @@ Dropdown.propTypes = {
   dropdownMargins: PropTypes.shape({
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
+  }),
+
+  windowPadding: PropTypes.shape({
+    top: PropTypes.number,
+    left: PropTypes.number,
+    bottom: PropTypes.number,
+    right: PropTypes.number,
   }),
 
   dropdownPosition: PropTypes.number,
@@ -734,6 +751,13 @@ Dropdown.defaultProps = {
   dropdownMargins: {
     min: 8,
     max: 16,
+  },
+
+  windowPadding: {
+    bottom: 0, //now using only this direction
+    top: 0,
+    left: 0,
+    right: 0,
   },
 
   rippleCentered: false,

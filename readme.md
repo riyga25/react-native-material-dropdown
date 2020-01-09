@@ -96,6 +96,8 @@ class Example extends Component {
  labelExtractor    | Extract label from item (args: item, index)   | Function | ({ label }) => label
  propsExtractor    | Extract props from item (args: item, index)   | Function | () => null
  onChangeText      | Selection callback (args: value, index, data) | Function | -
+ alignToContent    | Changing translateY if you don't have enough space in bottom for content | Boolean  | -
+ windowPadding     | Use with `alignToContent` - additional padding for content | Object  | { top: 0, bottom: 0, left: 0, right: 0 }
  changeTextWithCallback      | Add argument `callback` for `onChangeText`. `Callback` it's function and accept argument `next - bool`.  | Boolean | false
 
 Other [TextField][textfield], [TextInput][textinput] and [TouchableWithoutFeedback][touchable] properties will also work
