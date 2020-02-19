@@ -1,6 +1,6 @@
 {
   "name": "react-native-material-dropdown",
-  "version": "0.11.6",
+  "version": "0.11.8",
   "description": "Material dropdown",
   "keywords": [
     "react",
@@ -27,19 +27,16 @@
   },
 
   "devDependencies": {
-    "babel-eslint": "^8.0.0",
-    "eslint": "^4.5.0",
-    "eslint-plugin-react": "^7.0.0"
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.18.3"
   },
 
   "scripts": {
-    "lint": "eslint src example/app.js"
+    "lint": "eslint src ./src"
   },
 
   "dependencies": {
-    "prop-types": "^15.5.9",
-    "react-native-material-buttons": "^0.5.0",
-    "react-native-material-ripple": "^0.8.0",
-    "react-native-material-textfield": "^0.12.0"
+    "prop-types": "^15.7.2"
   }
 }

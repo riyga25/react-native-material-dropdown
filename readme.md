@@ -99,6 +99,7 @@ class Example extends Component {
  alignToContent    | Changing translateY if you don't have enough space in bottom for content | Boolean  | -
  windowPadding     | Use with `alignToContent` - additional padding for content | Object  | { top: 0, bottom: 0, left: 0, right: 0 }
  changeTextWithCallback      | Add argument `callback` for `onChangeText`. `Callback` it's function and accept argument `next - bool`.  | Boolean | false
+ itemNumberLines   |  Number of lines for element in list           | Number  | 1
 
 Other [TextField][textfield], [TextInput][textinput] and [TouchableWithoutFeedback][touchable] properties will also work
 

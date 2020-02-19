@@ -1,147 +1,133 @@
-import React, {FC, memo, useState} from 'react';
+import React, {FC, memo, useState, useCallback} from 'react';
 import {
   StyleSheet,
+  SafeAreaView,
   View,
   Text,
 } from 'react-native';
-import { TextField } from 'react-native-material-textfield';
 import { Dropdown } from 'react-native-material-dropdown';
+// import Dropdown from './components/dropdown';
 
-const typographyData = [
-  { value: 'Display2', label: 'Display 2' },
-  { value: 'Display1', label: 'Display 1' },
-  { value: 'Headline' },
-  { value: 'Title' },
-  { value: 'Subheading' },
-  { value: 'Body' },
-  { value: 'Caption' },
+const TEST_DATA = [
+  {label: 'label1', value: 1},
+  {label: 'label2', value: 2, disabled: true},
+  {label: 'label3', value: 3},
+  {label: 'label4', value: 4},
+  {label: 'label5', value: 5},
+  {label: 'label6', value: 6},
+  {label: 'label7', value: 7},
 ];
 
-const colorNameData = [
-  { value: 'Blue' },
-  { value: 'Teal' },
-  { value: 'Cyan' },
-];
-
-const colorCodeData = [
-  { value: '900', props: { disabled: true } },
-  { value: '700' },
-  { value: 'A700' },
-  { value: 'A400' },
-];
+const colors = {
+  GRAY_FONT_COLOR: '#444444',
+  UNACTIVE_FONT_COLOR: '#999999',
+  BORDER_COLOR: '#D9D9D9',
+  RED_FONT_COLOR: '#E20000',
+  SHADOW_BACKGROUND: 'rgba(41, 125, 253, 0.32)',
+  SELECTED_BACKGROUND: 'rgba(41,125,253,0.08)',
+};
 
 const App: FC = memo(() => {
-  const [sample, setSample] = useState('The quick brown fox jumps over the lazy dog');
-  const [typography, setTypography] = useState('Headline');
-  const [name, setName] = useState('Cyan');
-  const [code, setCode] = useState('A700');
+  const [value, setValue] = useState('');
+  const error = false;
+  const style = {marginHorizontal: 20, marginVertical: 30};
+  const disabled = false;
+  const itemNumberLines = false;
 
-  let textStyle = [
-    styles.text,
-    styles[typography],
-    styles[name + code],
-  ];
+  const propsExtractor = useCallback(props => {
+    const isSelected = value === props.value;
+    return {
+      disabled: props.disabled,
+      style: { backgroundColor: isSelected && colors.SELECTED_BACKGROUND },
+    };
+  },[value]);
 
-  return(
-    <View style={styles.screen}>
-      <View style={styles.container}>
-        <TextField
-          value={sample}
-          onChangeText={setSample}
-          label='Sample text'
-          multiline={true}
-        />
-
-        <Dropdown
-          value={typography}
-          onChangeText={setTypography}
-          label='Typography'
-          data={typographyData}
-        />
-
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <Dropdown
-              value={name}
-              onChangeText={setName}
-              label='Color name'
-              data={colorNameData}
-            />
-          </View>
-
-          <View style={{ width: 96, marginLeft: 8 }}>
-            <Dropdown
-              value={code}
-              onChangeText={setCode}
-              label='Color code'
-              data={colorCodeData}
-              // propsExtractor={({ props }) => props}
-            />
-          </View>
+  const renderBase = useCallback((props) => {
+    return(
+      <View style={{flexDirection: 'row', alignItems: 'center', position: 'relative', paddingRight: 20, minHeight: 42}}>
+        <Text
+            style={{lineHeight: 21}}
+            numberOfLines={itemNumberLines || 1}
+        >
+          {props.title || props.value}
+        </Text>
+        <View style={{position: 'absolute', right: 0}}>
+          {props.renderAccessory()}
         </View>
       </View>
+    )
+  },[]);
 
-      <View style={[styles.container, styles.textContainer]}>
-        <Text style={textStyle}>{sample}</Text>
-      </View>
-    </View>
+  const selectItem = useCallback(item => {
+    setValue(item);
+  },[setValue]);
+
+  return(
+    <SafeAreaView>
+      <Text>{`Selected ${value}`}</Text>
+      <Dropdown
+          data={TEST_DATA}
+          testID={'dropdownCall'}
+          dropdownPosition={0}
+          value={value}
+          onChangeText={selectItem}
+          propsExtractor={propsExtractor}
+          itemTextStyle={styles.itemTextStyle}
+          baseColor={'black'}
+          itemColor={colors.GRAY_FONT_COLOR}
+          selectedItemColor={'black'}
+          disabledItemColor={colors.UNACTIVE_FONT_COLOR}
+          dropdownOffset={styles.dropdownOffset}
+          dropdownMargins={{
+            min: 0,
+            max: 0,
+          }}
+          inputContainerStyle={styles.inputContainerStyle}
+          containerStyle={[
+            styles.containerStyle,
+            error && { borderColor: colors.RED_FONT_COLOR, borderWidth: 2 },
+            style && style,
+          ]}
+          pickerStyle={styles.pickerStyle}
+          disabled={disabled}
+          renderBase={renderBase}
+          disabledLineType={'none'}
+          alignToContent
+          windowPadding={{bottom: 64}} //bottomBar height
+      />
+    </SafeAreaView>
   )
 });
 
-const styles: any = StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: 4,
-    paddingTop: 56,
-    backgroundColor: '#E8EAF6',
-  },
-
-  container: {
-    marginHorizontal: 4,
-    marginVertical: 8,
+const styles = StyleSheet.create({
+  containerStyle: {
+    borderColor: colors.BORDER_COLOR,
+    borderWidth: 1,
+    borderRadius: 4,
     paddingHorizontal: 8,
+    minHeight: 42,
   },
-
-  text: {
-    textAlign: 'center',
+  itemTextStyle: {
+    fontSize: 16,
+    lineHeight: 21,
+    marginHorizontal: 20,
   },
-
-  textContainer: {
+  dropdownOffset: {
+    top: 7,
+    left: 0,
+  },
+  inputContainerStyle: {
+    borderBottomColor: 'transparent',
+  },
+  pickerStyle: {
     backgroundColor: 'white',
-    borderRadius: 2,
-    padding: 16,
-    elevation: 1,
-    shadowRadius: 1,
-    shadowOpacity: 0.3,
-    justifyContent: 'center',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    shadowColor: colors.SHADOW_BACKGROUND,
+    shadowOffset: { height: 4, width: 0 },
+    shadowRadius: 3,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.BORDER_COLOR,
   },
-
-  Display2: { fontSize: 45 },
-  Display1: { fontSize: 34 },
-  Headline: { fontSize: 24 },
-  Title: { fontSize: 20, fontWeight: '500' },
-  Subheading: { fontSize: 16 },
-  Body: { fontSize: 14 },
-  Caption: { fontSize: 12 },
-
-  Blue900: { color: '#0D47A1' },
-  Blue700: { color: '#1976D2' },
-  BlueA700: { color: '#2962FF' },
-  BlueA400: { color: '#2979FF' },
-
-  Teal900: { color: '#004D40' },
-  Teal700: { color: '#00796B' },
-  TealA700: { color: '#00BFA5' },
-  TealA400: { color: '#1DE9B6' },
-
-  Cyan900: { color: '#006064' },
-  Cyan700: { color: '#0097A7' },
-  CyanA700: { color: '#00E5FF' },
-  CyanA400: { color: '#00B8D4' },
 });
 
 export default App;
