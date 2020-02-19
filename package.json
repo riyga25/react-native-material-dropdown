@@ -1,6 +1,6 @@
 {
   "name": "react-native-material-dropdown",
-  "version": "0.11.9",
+  "version": "0.12.0",
   "description": "Material dropdown",
   "keywords": [
     "react",
@@ -33,7 +33,7 @@
   },
 
   "scripts": {
-    "lint": "eslint src ./src"
+    "lint": "eslint src ./src --fix"
   },
 
   "dependencies": {

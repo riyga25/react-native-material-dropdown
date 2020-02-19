@@ -87,7 +87,7 @@ export default class Dropdown extends PureComponent {
       }
 
       let delay = Math.max(
-          0, animationDuration - (Date.now() - timestamp)
+        0, animationDuration - (Date.now() - timestamp)
       );
       let selected = this.selectedIndex();
 
@@ -204,7 +204,7 @@ export default class Dropdown extends PureComponent {
     let { data, valueExtractor } = this.props;
 
     return data.findIndex(
-        (item, index) => null != item && value === valueExtractor(item, index)
+      (item, index) => null != item && value === valueExtractor(item, index)
     );
   };
 
@@ -312,11 +312,11 @@ export default class Dropdown extends PureComponent {
     let triangleStyle = { backgroundColor };
 
     return (
-        <View style={styles.accessory}>
-          <View style={styles.triangleContainer}>
-            <View style={[styles.triangle, triangleStyle]} />
-          </View>
+      <View style={styles.accessory}>
+        <View style={styles.triangleContainer}>
+          <View style={[styles.triangle, triangleStyle]} />
         </View>
+      </View>
     );
   };
 
@@ -352,12 +352,12 @@ export default class Dropdown extends PureComponent {
     let title = null == label ? value : label;
 
     let color = disabled
-        ? disabledItemColor
-        : ~selected
-            ? index === selected
-                ? selectedItemColor
-                : itemColor
-            : selectedItemColor;
+      ? disabledItemColor
+      : ~selected
+      ? index === selected
+        ? selectedItemColor
+        : itemColor
+      : selectedItemColor;
 
     let textStyle = { color, fontSize };
 
@@ -372,19 +372,19 @@ export default class Dropdown extends PureComponent {
     ];
 
     return(
-        <TouchableOpacity
-            underlayColor={'rgba(0,0,0,0.2)'}
-            onPress={this.onSelect(index)}
-            style={props.style}
-            activeOpacity={0.8}
+      <TouchableOpacity
+        underlayColor={'rgba(0,0,0,0.2)'}
+        onPress={this.onSelect(index)}
+        style={props.style}
+        activeOpacity={0.8}
+      >
+        <Text
+          style={[styles.item, itemTextStyle, textStyle]}
+          numberOfLines={itemNumberLines || 1}
         >
-          <Text
-              style={[styles.item, itemTextStyle, textStyle]}
-              numberOfLines={itemNumberLines || 1}
-          >
-            {title}
-          </Text>
-        </TouchableOpacity>
+          {title}
+        </Text>
+      </TouchableOpacity>
     )
   };
 
@@ -454,7 +454,7 @@ export default class Dropdown extends PureComponent {
         default:
           if (selected >= itemCount - tailItemCount) {
             translateY -=
-                itemSize * (visibleItemCount - (itemCount - selected));
+              itemSize * (visibleItemCount - (itemCount - selected));
           } else {
             translateY -= itemSize;
           }
@@ -496,12 +496,12 @@ export default class Dropdown extends PureComponent {
 
     return (
       <View
-          ref={this.updateContainerRef}
-          style={containerStyle}
+        ref={this.updateContainerRef}
+        style={containerStyle}
       >
         <TouchableWithoutFeedback
-            accessibilityState={{ disabled }}
-            {...touchableProps}
+          accessibilityState={{ disabled }}
+          {...touchableProps}
         >
           <View pointerEvents="box-only">
             {this.renderBase(baseProps)}
@@ -509,53 +509,53 @@ export default class Dropdown extends PureComponent {
         </TouchableWithoutFeedback>
 
         <Modal
-            visible={modal}
-            transparent={true}
-            onRequestClose={this.blur}
-            supportedOrientations={supportedOrientations}
+          visible={modal}
+          transparent={true}
+          onRequestClose={this.blur}
+          supportedOrientations={supportedOrientations}
         >
           <Animated.View
-              style={[styles.overlay, overlayStyle, overlayStyleOverrides]}
-              onStartShouldSetResponder={() => true}
-              onResponderRelease={this.blur}
+            style={[styles.overlay, overlayStyle, overlayStyleOverrides]}
+            onStartShouldSetResponder={() => true}
+            onResponderRelease={this.blur}
           >
             <View
-                style={[styles.picker, pickerStyle, pickerStyleOverrides]}
-                onStartShouldSetResponder={() => true}
+              style={[styles.picker, pickerStyle, pickerStyleOverrides]}
+              onStartShouldSetResponder={() => true}
             >
               <FlatList
-                  ref={this.updateScrollRef}
-                  data={data}
-                  testID={"dropdownList"}
-                  accessibilityLabel={"dropdownList"}
-                  style={styles.scroll}
-                  renderItem={this.renderItem}
-                  keyExtractor={this.keyExtractor}
-                  contentContainerStyle={styles.scrollContainer}
-                  showsVerticalScrollIndicator={!persistentScrollbar}
-                  bounces={false}
+                ref={this.updateScrollRef}
+                data={data}
+                testID={"dropdownList"}
+                accessibilityLabel={"dropdownList"}
+                style={styles.scroll}
+                renderItem={this.renderItem}
+                keyExtractor={this.keyExtractor}
+                contentContainerStyle={styles.scrollContainer}
+                showsVerticalScrollIndicator={!persistentScrollbar}
+                bounces={false}
 
-                  onContentSizeChange={this.contentSizeChange}
-                  onLayout={this.scrollLayout}
-                  scrollEventThrottle={16}
-                  onScroll={Animated.event(
-                      [{ nativeEvent: { contentOffset: { y: this.state.indicator } } }]
-                  )}
+                onContentSizeChange={this.contentSizeChange}
+                onLayout={this.scrollLayout}
+                scrollEventThrottle={16}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: this.state.indicator } } }]
+                )}
               />
               {
                 persistentScrollbar && (
-                    <Animated.View style={[
-                      styles.indicator, {
-                        height: indicatorSize,
-                        transform: [{
-                          translateY: Animated.multiply(this.state.indicator, this.state.visibleHeight / this.state.wholeHeight).interpolate({
-                            inputRange: [0, difference],
-                            outputRange: [0, difference],
-                            extrapolate: 'clamp',
-                          }),
-                        }],
-                      }]}
-                    />
+                  <Animated.View style={[
+                    styles.indicator, {
+                      height: indicatorSize,
+                      transform: [{
+                        translateY: Animated.multiply(this.state.indicator, this.state.visibleHeight / this.state.wholeHeight).interpolate({
+                          inputRange: [0, difference],
+                          outputRange: [0, difference],
+                          extrapolate: 'clamp'
+                        })
+                      }]
+                    }]}
+                  />
                 )
               }
             </View>

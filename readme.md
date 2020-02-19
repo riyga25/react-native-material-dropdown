@@ -87,9 +87,6 @@ class Example extends Component {
  overlayStyle      | Styles for overlay view                       |   Object | -
  pickerStyle       | Styles for item picker view                   |   Object | -
  shadeOpacity      | Shade opacity for dropdown items              |   Number | 0.12
- rippleOpacity     | Opacity for ripple effect                     |   Number | 0.54
- rippleInsets      | Insets for ripple on base component           |   Object | { top: 16, bottom: -8 }
- rippleCentered    | Ripple on base component should be centered   |  Boolean | false
  renderBase        | Render base component                         | Function | -
  renderAccessory   | Render text field accessory                   | Function | -
  valueExtractor    | Extract value from item (args: item, index)   | Function | ({ value }) => value
@@ -100,6 +97,7 @@ class Example extends Component {
  windowPadding     | Use with `alignToContent` - additional padding for content | Object  | { top: 0, bottom: 0, left: 0, right: 0 }
  changeTextWithCallback      | Add argument `callback` for `onChangeText`. `Callback` it's function and accept argument `next - bool`.  | Boolean | false
  itemNumberLines   |  Number of lines for element in list           | Number  | 1
+ persistentScrollbar   |  Show scrollbar all time                   | Boolean  | true
 
 Other [TextField][textfield], [TextInput][textinput] and [TouchableWithoutFeedback][touchable] properties will also work
 
