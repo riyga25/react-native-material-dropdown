@@ -32,7 +32,7 @@ const App: FC = memo(() => {
   const error = false;
   const style = {marginHorizontal: 20, marginVertical: 30};
   const disabled = false;
-  const itemNumberLines = false;
+  const itemNumberLines = 1;
 
   const propsExtractor = useCallback(props => {
     const isSelected = value === props.value;
@@ -93,6 +93,7 @@ const App: FC = memo(() => {
           renderBase={renderBase}
           disabledLineType={'none'}
           alignToContent
+          itemNumberLines={itemNumberLines}
           windowPadding={{bottom: 64}} //bottomBar height
       />
     </SafeAreaView>

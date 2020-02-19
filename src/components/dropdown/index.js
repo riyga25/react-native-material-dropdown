@@ -510,7 +510,6 @@ export default class Dropdown extends PureComponent {
                 style={styles.scroll}
                 renderItem={this.renderItem}
                 keyExtractor={this.keyExtractor}
-                scrollEnabled={visibleItemCount < itemCount}
                 contentContainerStyle={styles.scrollContainer}
                 showsVerticalScrollIndicator
               />
@@ -590,7 +589,7 @@ Dropdown.propTypes = {
   supportedOrientations: PropTypes.arrayOf(PropTypes.string),
 
   useNativeDriver: PropTypes.bool,
-  itemNumberLines: PropTypes.bool,
+  itemNumberLines: PropTypes.number,
 };
 
 Dropdown.defaultProps = {
