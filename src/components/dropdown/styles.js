@@ -67,10 +67,15 @@ export default StyleSheet.create({
     paddingVertical: 8,
   },
   indicator: {
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
-    width: 4,
+    backgroundColor: '#999999',
+    width: 8,
     position: 'absolute',
-    right: isIOS ? 3 : 0,
-    borderRadius: isIOS ? 2 : 0,
+    right: 3,
+    borderRadius: 4,
+
+    // default style
+    // right: isIOS ? 3 : 0,
+    // borderRadius: isIOS ? 2 : 0,
+    // width: 4,
   },
 });

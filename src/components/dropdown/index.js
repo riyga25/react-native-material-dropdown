@@ -28,7 +28,6 @@ export default class Dropdown extends PureComponent {
     this.blur = () => this.onClose();
 
     this.mounted = false;
-    this.focused = false;
 
     this.state = {
       opacity: new Animated.Value(0),
@@ -71,8 +70,6 @@ export default class Dropdown extends PureComponent {
     if (!data.length) {
       return;
     }
-
-    this.focused = true;
 
     if ("function" === typeof onFocus) {
       onFocus();
@@ -154,8 +151,6 @@ export default class Dropdown extends PureComponent {
       toValue: 0,
       useNativeDriver,
     }).start(() => {
-      this.focused = false;
-
       if ("function" === typeof onBlur) {
         onBlur();
       }
@@ -337,6 +332,7 @@ export default class Dropdown extends PureComponent {
       itemTextStyle,
       shadeOpacity,
       itemNumberLines,
+      itemPadding,
     } = this.props;
 
     let props = propsExtractor(item, index);
@@ -366,6 +362,7 @@ export default class Dropdown extends PureComponent {
       {
         paddingLeft: leftInset,
         paddingRight: rightInset,
+        paddingVertical: itemPadding,
         minHeight: 40,
         justifyContent: 'center',
       },
@@ -373,7 +370,6 @@ export default class Dropdown extends PureComponent {
 
     return(
         <TouchableOpacity
-            underlayColor={'rgba(0,0,0,0.2)'}
             onPress={this.onSelect(index)}
             style={props.style}
             activeOpacity={0.8}
@@ -427,7 +423,7 @@ export default class Dropdown extends PureComponent {
       dropdownPosition,
     };
 
-    const { left, top, width, opacity, selected, modal } = this.state;
+    const { left, top, width, opacity, selected, modal, wholeHeight, visibleHeight } = this.state;
 
     const itemCount = data.length;
     const visibleItemCount = this.visibleItemCount();
@@ -488,80 +484,80 @@ export default class Dropdown extends PureComponent {
       accessibilityLabel,
     };
 
-    const indicatorSize = this.state.wholeHeight > this.state.visibleHeight ?
-        this.state.visibleHeight * this.state.visibleHeight / this.state.wholeHeight :
-        this.state.visibleHeight;
+    const indicatorSize = wholeHeight > visibleHeight ?
+        visibleHeight * visibleHeight / wholeHeight :
+        visibleHeight;
 
-    const difference = this.state.visibleHeight > indicatorSize ? this.state.visibleHeight - indicatorSize : 1;
+    const difference = visibleHeight > indicatorSize ? visibleHeight - indicatorSize : 1;
 
     return (
-      <View
-          ref={this.updateContainerRef}
-          style={containerStyle}
-      >
-        <TouchableWithoutFeedback
-            accessibilityState={{ disabled }}
-            {...touchableProps}
+        <View
+            ref={this.updateContainerRef}
+            style={containerStyle}
         >
-          <View pointerEvents="box-only">
-            {this.renderBase(baseProps)}
-          </View>
-        </TouchableWithoutFeedback>
-
-        <Modal
-            visible={modal}
-            transparent={true}
-            onRequestClose={this.blur}
-            supportedOrientations={supportedOrientations}
-        >
-          <Animated.View
-              style={[styles.overlay, overlayStyle, overlayStyleOverrides]}
-              onStartShouldSetResponder={() => true}
-              onResponderRelease={this.blur}
+          <TouchableWithoutFeedback
+              accessibilityState={{ disabled }}
+              {...touchableProps}
           >
-            <View
-                style={[styles.picker, pickerStyle, pickerStyleOverrides]}
-                onStartShouldSetResponder={() => true}
-            >
-              <FlatList
-                  ref={this.updateScrollRef}
-                  data={data}
-                  testID={"dropdownList"}
-                  accessibilityLabel={"dropdownList"}
-                  style={styles.scroll}
-                  renderItem={this.renderItem}
-                  keyExtractor={this.keyExtractor}
-                  contentContainerStyle={styles.scrollContainer}
-                  showsVerticalScrollIndicator={!persistentScrollbar}
-                  bounces={false}
-
-                  onContentSizeChange={this.contentSizeChange}
-                  onLayout={this.scrollLayout}
-                  scrollEventThrottle={16}
-                  onScroll={Animated.event(
-                      [{ nativeEvent: { contentOffset: { y: this.state.indicator } } }]
-                  )}
-              />
-              {
-                persistentScrollbar && (
-                    <Animated.View style={[
-                      styles.indicator, {
-                        height: indicatorSize,
-                        transform: [{
-                          translateY: Animated.multiply(this.state.indicator, this.state.visibleHeight / this.state.wholeHeight).interpolate({
-                            inputRange: [0, difference],
-                            outputRange: [0, difference],
-                            extrapolate: 'clamp',
-                          }),
-                        }],
-                      }]}
-                    />
-                )
-              }
+            <View pointerEvents="box-only">
+              {this.renderBase(baseProps)}
             </View>
-          </Animated.View>
-        </Modal>
-      </View>
+          </TouchableWithoutFeedback>
+
+          <Modal
+              visible={modal}
+              transparent={true}
+              onRequestClose={this.blur}
+              supportedOrientations={supportedOrientations}
+          >
+            <Animated.View
+                style={[styles.overlay, overlayStyle, overlayStyleOverrides]}
+                onStartShouldSetResponder={() => true}
+                onResponderRelease={this.blur}
+            >
+              <View
+                  style={[styles.picker, pickerStyle, pickerStyleOverrides]}
+                  onStartShouldSetResponder={() => true}
+              >
+                <FlatList
+                    ref={this.updateScrollRef}
+                    data={data}
+                    testID={"dropdownList"}
+                    accessibilityLabel={"dropdownList"}
+                    style={styles.scroll}
+                    renderItem={this.renderItem}
+                    keyExtractor={this.keyExtractor}
+                    contentContainerStyle={styles.scrollContainer}
+                    showsVerticalScrollIndicator={!persistentScrollbar}
+                    bounces={false}
+
+                    onContentSizeChange={this.contentSizeChange}
+                    onLayout={this.scrollLayout}
+                    scrollEventThrottle={16}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: this.state.indicator } } }]
+                    )}
+                />
+                {
+                  (persistentScrollbar && wholeHeight > height) && (
+                      <Animated.View style={[
+                        styles.indicator, {
+                          height: indicatorSize,
+                          transform: [{
+                            translateY: Animated.multiply(this.state.indicator, visibleHeight / wholeHeight).interpolate({
+                              inputRange: [0, difference],
+                              outputRange: [0, difference],
+                              extrapolate: 'clamp'
+                            })
+                          }]
+                        }]}
+                      />
+                  )
+                }
+              </View>
+            </Animated.View>
+          </Modal>
+        </View>
     );
   }
 }

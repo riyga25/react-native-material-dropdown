@@ -5,13 +5,13 @@ import {
   View,
   Text,
 } from 'react-native';
-import { Dropdown } from 'react-native-material-dropdown';
-// import Dropdown from './components/dropdown';
+// import { Dropdown } from 'react-native-material-dropdown';
+import Dropdown from './components/dropdown';
 
 const TEST_DATA = [
   {label: 'label1', value: 1},
-  {label: 'label2', value: 2, disabled: true},
-  {label: 'label3', value: 3},
+  // {label: 'label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 label2 ', value: 2, disabled: true},
+  // {label: 'label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3 label3', value: 3},
   {label: 'label4', value: 4},
   {label: 'label5', value: 5},
   {label: 'label6', value: 6},
@@ -32,7 +32,7 @@ const App: FC = memo(() => {
   const error = false;
   const style = {marginHorizontal: 20, marginVertical: 30};
   const disabled = false;
-  const itemNumberLines = 1;
+  const itemNumberLines = 99;
 
   const propsExtractor = useCallback(props => {
     const isSelected = value === props.value;
